@@ -950,18 +950,18 @@ void CaveCraft::drawCube(int index, int x, int y, int z, float sInc)
 
 	float t_tx0 = (topTexture%16)*(1/16.0f);
 	float t_tx1 = ((topTexture%16)+1)*(1/16.0f);
-	float t_ty0 = 1-(topTexture/16)*(1/16.0f);
-	float t_ty1 = 1-((topTexture/16)+1)*(1/16.0f);
+	float t_ty0 = (topTexture/16)*(1/16.0f);
+	float t_ty1 = ((topTexture/16)+1)*(1/16.0f);
 
 	float s_tx0 = (sideTexture%16)*(1/16.0f);
 	float s_tx1 = ((sideTexture%16)+1)*(1/16.0f);
-	float s_ty0 = 1-(sideTexture/16)*(1/16.0f);
-	float s_ty1 = 1-((sideTexture/16)+1)*(1/16.0f);
+	float s_ty0 = (sideTexture/16)*(1/16.0f);
+	float s_ty1 = ((sideTexture/16)+1)*(1/16.0f);
 
 	float b_tx0 = (bottomTexture%16)*(1/16.0f);
 	float b_tx1 = ((bottomTexture%16)+1)*(1/16.0f);
-	float b_ty0 = 1-(bottomTexture/16)*(1/16.0f);
-	float b_ty1 = 1-((bottomTexture/16)+1)*(1/16.0f);
+	float b_ty0 = (bottomTexture/16)*(1/16.0f);
+	float b_ty1 = ((bottomTexture/16)+1)*(1/16.0f);
 
 	glNormal3f(0,1,0);
 	glTexCoord2f(b_tx1, b_ty0); glVertex3f(scale2*(x+1+sInc),	scale2*(y-sInc),	scale2*(z-sInc));
@@ -1224,18 +1224,18 @@ void CaveCraft::cChunk::buildVboData()
 
 							float t_tx0 = (topTexture%16)*oneSize;
 							float t_tx1 = ((topTexture%16)+1)*oneSize;
-							float t_ty0 = 1-(topTexture/16)*oneSize;
-							float t_ty1 = 1-((topTexture/16)+1)*oneSize;
+							float t_ty0 = (topTexture/16)*oneSize;
+							float t_ty1 = ((topTexture/16)+1)*oneSize;
 
 							float s_tx0 = (sideTexture%16)*oneSize;
 							float s_tx1 = ((sideTexture%16)+1)*oneSize;
-							float s_ty0 = 1-(sideTexture/16)*oneSize;
-							float s_ty1 = 1-((sideTexture/16)+1)*oneSize;
+							float s_ty0 = (sideTexture/16)*oneSize;
+							float s_ty1 = ((sideTexture/16)+1)*oneSize;
 
 							float b_tx0 = (bottomTexture%16)*oneSize;
 							float b_tx1 = ((bottomTexture%16)+1)*oneSize;
-							float b_ty0 = 1-(bottomTexture/16)*oneSize;
-							float b_ty1 = 1-((bottomTexture/16)+1)*oneSize;
+							float b_ty0 = (bottomTexture/16)*oneSize;
+							float b_ty1 = ((bottomTexture/16)+1)*oneSize;
 
 							normal = glm::vec3(-normal[0], -normal[1], -normal[2]);
 
