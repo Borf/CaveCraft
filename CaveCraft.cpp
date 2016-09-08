@@ -112,6 +112,17 @@ void CaveCraft::init()
 	mKeyPageDown.init("KeyPageDown");
 	mKeyPageUp.init("KeyPageUp");
 
+	if (!mKeyF5.isInitialized())
+	{
+		mLeftButton.init("buttonRightTrigger");
+		mRightButton.init("buttonLeftTrigger");
+		mKeyF5.init("buttonRightMenu");
+
+		mKeyPageDown.init("buttonLeftGrip");
+		mKeyPageUp.init("buttonRightGrip");
+	}
+
+
 	blockTexture = vrlib::Texture::loadCached("data/cavecraft/terrain.png");
 	blockTexture->setNearestFilter();
 	loadingTexture = vrlib::Texture::loadCached("data/cavecraft/loading.png");
@@ -630,25 +641,25 @@ void CaveCraft::draw(const glm::mat4 &projectionMatrix, const glm::mat4 &modelvi
 		glEnable(GL_TEXTURE_2D);
 		loadingTexture->bind();
 		glBegin(GL_QUADS);
-			glTexCoord2f(0,1); glVertex3f(-5,-5,-5);
-			glTexCoord2f(0,0); glVertex3f(-5,5,-5);
-			glTexCoord2f(1,0); glVertex3f(5,5,-5);
-			glTexCoord2f(1,1); glVertex3f(5,-5,-5);
-
 			glTexCoord2f(0,0); glVertex3f(-5,-5,-5);
-			glTexCoord2f(0,1); glVertex3f(-5,-5,5);
-			glTexCoord2f(1,1); glVertex3f(5,-5,5);
+			glTexCoord2f(0,1); glVertex3f(-5,5,-5);
+			glTexCoord2f(1,1); glVertex3f(5,5,-5);
 			glTexCoord2f(1,0); glVertex3f(5,-5,-5);
 
-			glTexCoord2f(1,1); glVertex3f(-5,-5,-5);
-			glTexCoord2f(0,1); glVertex3f(-5,-5,5);
-			glTexCoord2f(0,0); glVertex3f(-5,5,5);
-			glTexCoord2f(1,0); glVertex3f(-5,5,-5);
+			glTexCoord2f(0,1); glVertex3f(-5,-5,-5);
+			glTexCoord2f(0,0); glVertex3f(-5,-5,5);
+			glTexCoord2f(1,0); glVertex3f(5,-5,5);
+			glTexCoord2f(1,1); glVertex3f(5,-5,-5);
 
-			glTexCoord2f(0,1); glVertex3f(5,-5,-5);
-			glTexCoord2f(1,1); glVertex3f(5,-5,5);
-			glTexCoord2f(1,0); glVertex3f(5,5,5);
-			glTexCoord2f(0,0); glVertex3f(5,5,-5);
+			glTexCoord2f(1,0); glVertex3f(-5,-5,-5);
+			glTexCoord2f(0,0); glVertex3f(-5,-5,5);
+			glTexCoord2f(0,1); glVertex3f(-5,5,5);
+			glTexCoord2f(1,1); glVertex3f(-5,5,-5);
+
+			glTexCoord2f(0,0); glVertex3f(5,-5,-5);
+			glTexCoord2f(1,0); glVertex3f(5,-5,5);
+			glTexCoord2f(1,1); glVertex3f(5,5,5);
+			glTexCoord2f(0,1); glVertex3f(5,5,-5);
 
 		glEnd();
 	}
@@ -1123,18 +1134,18 @@ void CaveCraft::cChunk::buildVboData()
 
 							float t_tx0 = (topTexture%16)*oneSize;
 							float t_tx1 = ((topTexture%16)+1)*oneSize;
-							float t_ty0 = (topTexture/16)*oneSize;
-							float t_ty1 = ((topTexture/16)+1)*oneSize;
+							float t_ty0 = 1-(topTexture/16)*oneSize;
+							float t_ty1 = 1-((topTexture/16)+1)*oneSize;
 
 							float s_tx0 = (sideTexture%16)*oneSize;
 							float s_tx1 = ((sideTexture%16)+1)*oneSize;
-							float s_ty0 = (sideTexture/16)*oneSize;
-							float s_ty1 = ((sideTexture/16)+1)*oneSize;
+							float s_ty0 = 1-(sideTexture/16)*oneSize;
+							float s_ty1 = 1-((sideTexture/16)+1)*oneSize;
 
 							float b_tx0 = (bottomTexture%16)*oneSize;
 							float b_tx1 = ((bottomTexture%16)+1)*oneSize;
-							float b_ty0 = (bottomTexture/16)*oneSize;
-							float b_ty1 = ((bottomTexture/16)+1)*oneSize;
+							float b_ty0 = 1-(bottomTexture/16)*oneSize;
+							float b_ty1 = 1-((bottomTexture/16)+1)*oneSize;
 
 							normal = glm::vec3(-normal[0], -normal[1], -normal[2]);
 
@@ -1224,18 +1235,18 @@ void CaveCraft::cChunk::buildVboData()
 
 							float t_tx0 = (topTexture%16)*oneSize;
 							float t_tx1 = ((topTexture%16)+1)*oneSize;
-							float t_ty0 = (topTexture/16)*oneSize;
-							float t_ty1 = ((topTexture/16)+1)*oneSize;
+							float t_ty0 = 1-(topTexture/16)*oneSize;
+							float t_ty1 = 1-((topTexture/16)+1)*oneSize;
 
 							float s_tx0 = (sideTexture%16)*oneSize;
 							float s_tx1 = ((sideTexture%16)+1)*oneSize;
-							float s_ty0 = (sideTexture/16)*oneSize;
-							float s_ty1 = ((sideTexture/16)+1)*oneSize;
+							float s_ty0 = 1-(sideTexture/16)*oneSize;
+							float s_ty1 = 1-((sideTexture/16)+1)*oneSize;
 
 							float b_tx0 = (bottomTexture%16)*oneSize;
 							float b_tx1 = ((bottomTexture%16)+1)*oneSize;
-							float b_ty0 = (bottomTexture/16)*oneSize;
-							float b_ty1 = ((bottomTexture/16)+1)*oneSize;
+							float b_ty0 = 1-(bottomTexture/16)*oneSize;
+							float b_ty1 = 1-((bottomTexture/16)+1)*oneSize;
 
 							normal = glm::vec3(-normal[0], -normal[1], -normal[2]);
 
