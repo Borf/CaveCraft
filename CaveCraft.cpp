@@ -20,27 +20,6 @@ std::string ip = "localhost";
 int serverport = 25565;
 int sticklength = 5;
 
-void setStatus(const char* format,...)
-{
-	char text[2048];
-	va_list args;
-	va_start (args, format);
-	vsprintf_s(text,2048, format, args);
-	va_end (args);
-
-	std::ofstream pFile("d:/cavestatus.txt");
-	pFile.write(text, strlen(text));
-	pFile<<"\n";
-	pFile<<"Lopen\n";
-	pFile<<"Draaien\n";
-	pFile<<"Blok plaatsen\n";
-	pFile<<"Blok weghalen\n";
-	pFile<<"Blok Kiezen (lang inhouden om af te sluiten)";
-
-	pFile.close();
-}
-
-
 
 CaveCraft::CaveCraft()
 {
@@ -108,9 +87,9 @@ void CaveCraft::init()
 	mWand.init("WandPosition");
 	mLeftButton.init("LeftButton");
 	mRightButton.init("RightButton");
-	mKeyF5.init("MiddleButton");
-	mKeyPageDown.init("KeyPageDown");
-	mKeyPageUp.init("KeyPageUp");
+	mKeyF5.init("alt1");
+	mKeyPageDown.init("alt1");
+	mKeyPageUp.init("alt2");
 
 	if (!mKeyF5.isInitialized())
 	{
@@ -270,8 +249,6 @@ void CaveCraft::preFrame(double frameTime, double totalTime)
 			{
 				int len = (BYTE)buf[1] | ((BYTE)buf[0]<<8);
 				gzipdata += std::string(buf+2, len);
-				setStatus("Loading level: %i%%\r", buf[1026]);
-				Sleep(10);
 			}
 			else if(packet == 0x04) // finalize level
 			{
@@ -290,6 +267,7 @@ void CaveCraft::preFrame(double frameTime, double totalTime)
 						buffer += std::string(buf2, rc);
 					}
 					gzclose(file);
+					_unlink("tmp.txt");
 					buffer = buffer.substr(4);
 					sharedInfo->blocks = new unsigned char[sharedInfo->mapSizeX*sharedInfo->mapSizeY*sharedInfo->mapSizeZ];
 					for(int i = 0; i < sharedInfo->mapSizeX*sharedInfo->mapSizeY*sharedInfo->mapSizeZ; i++)
@@ -346,7 +324,7 @@ void CaveCraft::preFrame(double frameTime, double totalTime)
 		if(sharedInfo->position[1] > targetHeight+collisionHeight)
 		{
 			if(fallspeed < 0.9)
-				fallspeed+=0.01f;
+				fallspeed+=0.01f * frameTime/1000.0f;
 			sharedInfo->position[1]-=fallspeed;
 		}
 		else
@@ -397,9 +375,9 @@ void CaveCraft::preFrame(double frameTime, double totalTime)
 			if(mRightButton.getData() == vrlib::ON)
 			{
 				glm::mat4 wandMat = mWand.getData();
-				glm::vec4 up = wandMat * glm::vec4(0,1,0, 0);
+				glm::vec4 up = wandMat * glm::vec4(0,-1,0, 0);
 				glm::vec3 rot1 = getRotation(wandMat, glm::vec3(0,0,0), glm::vec3(0,0,1));
-				up = glm::rotate(glm::mat4(), glm::radians(-rot1[1]), glm::vec3(0,1,0)) * up;
+				up = glm::rotate(glm::mat4(), -glm::radians(rot1[1]), glm::vec3(0,1,0)) * up;
 				float wandH = glm::degrees(atan2(up[0], up[1]));
 				if(wandH < 0)
 					wandH = -180 - wandH;
@@ -576,7 +554,7 @@ void CaveCraft::draw(const glm::mat4 &projectionMatrix, const glm::mat4 &modelvi
 	glPushMatrix();
 	glScalef(scale,scale,scale);
 	glRotatef(sharedInfo->rotation, 0,1,0);
-	glTranslatef(-sharedInfo->position[0]*scale2, -sharedInfo->position[1]*scale2-3, -sharedInfo->position[2]*scale2);
+	glTranslatef(-sharedInfo->position[0]*scale2, -sharedInfo->position[1]*scale2-1.5f, -sharedInfo->position[2]*scale2);
 	//	cFrustum::calculateFrustum();
 
 	glEnable(GL_ALPHA_TEST);
